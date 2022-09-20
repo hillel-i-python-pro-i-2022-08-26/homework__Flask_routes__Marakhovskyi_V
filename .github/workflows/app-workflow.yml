@@ -20,7 +20,7 @@ jobs:
           pip install --requirement requirements.txt
       - name: Make autoformatting
         run: |
-          black ./
+          flake8 ./
       - name: Check codestyle
         run: |
-          flake8 ./
+          black ./

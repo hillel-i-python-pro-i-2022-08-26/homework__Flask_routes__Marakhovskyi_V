@@ -28,7 +28,8 @@ def generate_users_default():
     fake = Faker()
     Faker.seed(0)
     return "".join(
-        f'<p>{fake.first_name() + " " + fake.ascii_email()}</p>' for _ in range(100)
+        f'<p>{fake.first_name() + " " + fake.ascii_email()}</p>'
+        for _ in range(100)
     )
 
 
@@ -37,7 +38,8 @@ def generate_users(num: int):
     fake = Faker()
     Faker.seed(0)
     return "".join(
-        f'<p>{fake.first_name() + " " + fake.ascii_email()}</p>' for _ in range(num)
+        f'<p>{fake.first_name() + " " + fake.ascii_email()}</p>'
+        for _ in range(num)
     )
 
 
@@ -48,7 +50,8 @@ def calculate_astronauts():
     content = response.text
     deserialized_content = json.loads(content)
     return (
-        f"<h3>Total number of astronauts is: " f'{deserialized_content["number"]}</h3>'
+        f"<h3>Total number of astronauts is: " f'{deserialized_content["number"]}'
+        f'</h3>'
     )
 
 
@@ -63,8 +66,10 @@ def calculate_params():
             total_height += float(list(row.values())[1])
             total_weight += float(list(row.values())[2])
             people_quantity += 1
-        average_height_cm = (total_height / people_quantity) * constant_inches_to_cm
-        average_weight_kg = (total_weight / people_quantity) * constant_pounds_to_kg
+        average_height_cm = \
+            (total_height / people_quantity) * constant_inches_to_cm
+        average_weight_kg = \
+            (total_weight / people_quantity) * constant_pounds_to_kg
     return (
         f"<h3>1. Average height: {int(average_height_cm)} CM.</h3>"
         f"<h3>2. Average weight: {int(average_weight_kg)} KG.</h3>"
