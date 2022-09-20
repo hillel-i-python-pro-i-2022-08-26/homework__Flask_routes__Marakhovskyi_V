@@ -50,7 +50,7 @@ def calculate_astronauts():
     content = response.text
     deserialized_content = json.loads(content)
     return (
-        f"<h3>Total number of astronauts is: " 
+        f"<h3>Total number of astronauts is: "
         f'{deserialized_content["number"]}'f'</h3>'
     )
 
