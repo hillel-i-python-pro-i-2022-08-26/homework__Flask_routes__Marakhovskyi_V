@@ -17,10 +17,10 @@ def home_page():
     )
 
 
-@app.route("/requirements/<name>")
-def read_txt(name):
-
-    return render_template(name)
+@app.route("/requirements/")
+def read_txt():
+    with open("templates/something.txt") as file:
+        return "".join(f"<p>{line}</p>" for line in file.read().split("\n"))
 
 
 @app.route("/generate_users/")
