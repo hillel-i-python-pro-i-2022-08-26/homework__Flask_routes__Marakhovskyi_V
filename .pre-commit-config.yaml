@@ -1,8 +1,3 @@
--   repo: https://github.com/asottile/pyupgrade
-    rev: v2.38.0
-    hooks:
-    -   id: pyupgrade
-
 repos:
   - repo: https://github.com/psf/black
     rev: 22.8.0
@@ -13,3 +8,8 @@ repos:
         # pre-commit's default_language_version, see
         # https://pre-commit.com/#top_level-default_language_version
         language_version: python3.10
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.38.0
+    hooks:
+      - id: pyupgrade
