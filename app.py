@@ -23,7 +23,7 @@ def read_txt():
         return "".join(f"<p>{line}</p>" for line in file.read().split("\n"))
 
 
-@app.route("/generate_users/")
+@app.route("/generate-users/")
 def generate_users_default():
     fake = Faker()
     Faker.seed(0)
@@ -32,7 +32,7 @@ def generate_users_default():
     )
 
 
-@app.route("/generate_users/<int:num>")
+@app.route("/generate-users/<int:num>")
 def generate_users(num: int):
     fake = Faker()
     Faker.seed(0)
