@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="flaskProject" type="Python.FlaskServer">
     <option name="flaskDebug" value="true" />
-    <module name="flaskProject" />
+    <module name="clone_test" />
     <option name="target" value="$PROJECT_DIR$/app.py" />
     <option name="targetType" value="PATH" />
     <option name="INTERPRETER_OPTIONS" value="" />
