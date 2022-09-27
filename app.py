@@ -91,18 +91,18 @@ def phonecontacts__update(
     return "<h3>Phone book was successfully updated</h3>"
 
 
-@app.route("/users/delete/<int:pk>")
-def users__delete(pk):
+@app.route("/phones/delete/<int:PhoneID>")
+def phonecontacts__delete(PhoneID):
     with DBConnection() as connection:
         with connection:
             connection.execute(
-                "DELETE " "FROM users " "WHERE (pk=:pk);",
+                "DELETE " "FROM phones " "WHERE (PhoneID=:PhoneID);",
                 {
-                    "pk": pk,
+                    "PhoneID": PhoneID,
                 },
             )
 
-    return "Ok"
+    return "<h3>Selected contact was successfully deleted from phone book</h3>"
 
 
 @app.route("/")
