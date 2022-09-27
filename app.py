@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response
 from faker import Faker
 import requests
 import json
@@ -40,6 +40,69 @@ def phones__read_all():
             for phone in phones
         ]
     )
+
+
+@app.route("/phones/read/<int:PhoneID>")
+def phones__read(PhoneID: int):
+    with DBConnection() as connection:
+        user = connection.execute(
+            "SELECT * " "FROM phones " "WHERE (PhoneID=:PhoneID);",
+            {
+                "PhoneID": PhoneID,
+            },
+        ).fetchone()
+
+    return f'{user["PhoneID"]}: {user["ContactName"]} - {user["PhoneValue"]}'
+
+
+@app.route("/phones/update/<int:PhoneID>")
+@use_args({"PhoneValue": fields.Int(), "ContactName": fields.Str()}, location="query")
+def phonecontacts__update(
+    args,
+    PhoneID: int,
+):
+    with DBConnection() as connection:
+        with connection:
+            ContactName = args.get("ContactName")
+            PhoneValue = args.get("PhoneValue")
+            if ContactName is None and PhoneValue is None:
+                return Response(
+                    "<h3>Need to provide at least one argument</h3>",
+                    status=400,
+                )
+
+            args_for_request = []
+            if ContactName is not None:
+                args_for_request.append("ContactName=:ContactName")
+            if PhoneValue is not None:
+                args_for_request.append("PhoneValue=:PhoneValue")
+
+            args_2 = ", ".join(args_for_request)
+
+            connection.execute(
+                "UPDATE phones " f"SET {args_2} " "WHERE PhoneID=:PhoneID;",
+                {
+                    "PhoneID": PhoneID,
+                    "PhoneValue": PhoneValue,
+                    "ContactName": ContactName,
+                },
+            )
+
+    return "<h3>Phone book was successfully updated</h3>"
+
+
+@app.route("/users/delete/<int:pk>")
+def users__delete(pk):
+    with DBConnection() as connection:
+        with connection:
+            connection.execute(
+                "DELETE " "FROM users " "WHERE (pk=:pk);",
+                {
+                    "pk": pk,
+                },
+            )
+
+    return "Ok"
 
 
 @app.route("/")
