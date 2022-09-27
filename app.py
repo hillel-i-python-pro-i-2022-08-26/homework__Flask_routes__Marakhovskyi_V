@@ -32,7 +32,7 @@ def phone__create(args):
 @app.route("/phones/read-all")
 def phones__read_all():
     with DBConnection() as connection:
-        users = connection.execute("SELECT * FROM phones;").fetchall()
+        phones = connection.execute("SELECT * FROM phones;").fetchall()
 
     return "<br>".join(
         [
