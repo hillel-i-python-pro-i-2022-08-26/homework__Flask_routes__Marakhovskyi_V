@@ -4,8 +4,27 @@ import requests
 import json
 import csv
 
+from webargs import fields
+from webargs.flaskparser import use_args
+
 
 app = Flask(__name__, template_folder="templates")
+
+
+@app.route("/users/create")
+@use_args(
+    {"name": fields.Str(required=True), "age": fields.Int(required=True)},
+    location="query",
+)
+def users__create(args):
+    with DBConnection() as connection:
+        with connection:
+            connection.execute(
+                "INSERT INTO users (name, age) VALUES (:name, :age);",
+                {"name": args["name"], "age": args["age"]},
+            )
+
+    return "Ok"
 
 
 @app.route("/")
