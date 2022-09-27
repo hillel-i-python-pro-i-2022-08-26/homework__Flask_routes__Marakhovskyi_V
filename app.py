@@ -3,28 +3,43 @@ from faker import Faker
 import requests
 import json
 import csv
-
 from webargs import fields
 from webargs.flaskparser import use_args
+
+from application.services.create_table import create_table
+from application.services.db_connection import DBConnection
 
 
 app = Flask(__name__, template_folder="templates")
 
 
-@app.route("/users/create")
+@app.route("/phones/create")
 @use_args(
-    {"name": fields.Str(required=True), "age": fields.Int(required=True)},
+    {"ContactName": fields.Str(required=True), "PhoneValue": fields.Int(required=True)},
     location="query",
 )
-def users__create(args):
+def phone__create(args):
     with DBConnection() as connection:
         with connection:
             connection.execute(
-                "INSERT INTO users (name, age) VALUES (:name, :age);",
-                {"name": args["name"], "age": args["age"]},
+                "INSERT INTO phones (ContactName, PhoneValue) VALUES (:ContactName, :PhoneValue);",
+                {"ContactName": args["ContactName"], "PhoneValue": args["PhoneValue"]},
             )
 
-    return "Ok"
+    return "<h3>New entry was added to phone book!</h3>"
+
+
+@app.route("/phones/read-all")
+def phones__read_all():
+    with DBConnection() as connection:
+        users = connection.execute("SELECT * FROM phones;").fetchall()
+
+    return "<br>".join(
+        [
+            f'{phone["PhoneID"]}: {phone["ContactName"]} - {phone["PhoneValue"]}'
+            for phone in phones
+        ]
+    )
 
 
 @app.route("/")
@@ -91,6 +106,8 @@ def calculate_params():
         f"<h3>2. Average weight: {int(average_weight_kg)} KG.</h3>"
     )
 
+
+create_table()
 
 if __name__ == "__main__":
     app.run(debug=True)

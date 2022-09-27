@@ -6,10 +6,10 @@ def create_table():
         with connection:
             connection.execute(
                 """
-                CREATE TABLE IF NOT EXISTS users (
-                    pk INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                    name TEXT NOT NULL,
-                    age INTEGER NOT NULL
+                CREATE TABLE IF NOT EXISTS phones (
+                    PhoneID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    ContactName TEXT NOT NULL,
+                    PhoneValue INTEGER NOT NULL
                 )
             """
             )
