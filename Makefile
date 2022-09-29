@@ -1,7 +1,7 @@
 .PHONY: homework-i-run
 # Run homework.
 homework-i-run:
-	@python app.py
+	@@FLASK_DEBUG=1 flask run
 
 .PHONY: homework-i-purge
 homework-i-purge:
