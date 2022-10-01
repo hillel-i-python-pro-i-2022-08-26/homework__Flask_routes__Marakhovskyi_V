@@ -125,16 +125,8 @@ def read_txt():
 
 
 @app.route("/generate-users/")
-def generate_users_default():
-    fake = Faker()
-    Faker.seed(0)
-    return "".join(
-        f"<p>{fake.first_name()} {fake.ascii_email()}</p>" for _ in range(100)
-    )
-
-
 @app.route("/generate-users/<int:num>")
-def generate_users(num: int):
+def generate_users_default(num: int = 100):
     fake = Faker()
     Faker.seed(0)
     return "".join(
