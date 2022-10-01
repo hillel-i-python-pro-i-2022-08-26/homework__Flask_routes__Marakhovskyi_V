@@ -129,7 +129,7 @@ def generate_users_default():
     fake = Faker()
     Faker.seed(0)
     return "".join(
-        f'<p>{fake.first_name() + " " + fake.ascii_email()}</p>' for _ in range(100)
+        f"<p>{fake.first_name()} {fake.ascii_email()}</p>" for _ in range(100)
     )
 
 
@@ -138,7 +138,7 @@ def generate_users(num: int):
     fake = Faker()
     Faker.seed(0)
     return "".join(
-        f'<p>{fake.first_name() + " " + fake.ascii_email()}</p>' for _ in range(num)
+        f"<p>{fake.first_name()} {fake.ascii_email()}</p>" for _ in range(num)
     )
 
 
