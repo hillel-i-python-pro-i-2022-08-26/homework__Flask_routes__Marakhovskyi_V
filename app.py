@@ -12,22 +12,18 @@ from application.services.db_connection import DBConnection
 
 app = Flask(__name__, template_folder="templates")
 
-contact_name = "contact_name"
-
-phone_value = "phone_value"
-
 
 @app.route("/phones/create")
 @use_args(
-    {contact_name: fields.Str(required=True), phone_value: fields.Int(required=True)},
+    {"contactName": fields.Str(required=True), "phoneValue": fields.Int(required=True)},
     location="query",
 )
 def phone__create(args):
     with DBConnection() as connection:
         with connection:
             connection.execute(
-                "INSERT INTO phones (contact_name, phone_value) VALUES (:contact_name, :phone_value);",
-                {contact_name: args[contact_name], phone_value: args[phone_value]},
+                "INSERT INTO phones (contactName, phoneValue) VALUES (:contactName, :phoneValue);",
+                {"contactName": args["contactName"], "phoneValue": args["phoneValue"]},
             )
 
     return "<h3>New entry was added to phone book!</h3>"
@@ -40,7 +36,7 @@ def phones__read_all():
 
     return "<br>".join(
         [
-            f'{phone["phone_id"]}: {phone[contact_name]} - {phone[phone_value]}'
+            f'{phone["phoneID"]}: {phone["contactName"]} - {phone["phoneValue"]}'
             for phone in phones
         ]
     )
@@ -50,25 +46,25 @@ def phones__read_all():
 def phones__read(phone_id: int):
     with DBConnection() as connection:
         user = connection.execute(
-            "SELECT * " "FROM phones " "WHERE (phone_id=:phone_id);",
+            "SELECT * " "FROM phones " "WHERE (phoneID=:phone_id);",
             {
                 "phone_id": phone_id,
             },
         ).fetchone()
 
-    return f'{user["phone_id"]}: {user[contact_name]} - {user[phone_value]}'
+    return f'{user["phoneID"]}: {user["contactName"]} - {user["phoneValue"]}'
 
 
 @app.route("/phones/update/<int:phone_id>")
-@use_args({phone_value: fields.Int(), contact_name: fields.Str()}, location="query")
+@use_args({"phoneValue": fields.Int(), "contactName": fields.Str()}, location="query")
 def phonecontacts__update(
     args,
     phone_id: int,
 ):
     with DBConnection() as connection:
         with connection:
-            contact_name = args.get("contact_name")
-            phone_value = args.get("phone_value")
+            contact_name = args.get("contactName")
+            phone_value = args.get("phoneValue")
             if contact_name is None and phone_value is None:
                 return Response(
                     "<h3>Need to provide at least one argument</h3>",
@@ -77,14 +73,14 @@ def phonecontacts__update(
 
             args_for_request = []
             if contact_name is not None:
-                args_for_request.append("contact_name=:contact_name")
+                args_for_request.append("contactName=:contact_name")
             if phone_value is not None:
-                args_for_request.append("phone_value=:phone_value")
+                args_for_request.append("phoneValue=:phone_value")
 
             args_2 = ", ".join(args_for_request)
 
             connection.execute(
-                "UPDATE phones " f"SET {args_2} " "WHERE phone_id=:phone_id;",
+                "UPDATE phones " f"SET {args_2} " "WHERE phoneID=:phone_id;",
                 {
                     "phone_id": phone_id,
                     "phone_value": phone_value,
@@ -100,7 +96,7 @@ def phonecontacts__delete(phone_id):
     with DBConnection() as connection:
         with connection:
             connection.execute(
-                "DELETE " "FROM phones " "WHERE (phone_id=:phone_id);",
+                "DELETE " "FROM phones " "WHERE (phoneID=:phone_id);",
                 {
                     "phone_id": phone_id,
                 },
