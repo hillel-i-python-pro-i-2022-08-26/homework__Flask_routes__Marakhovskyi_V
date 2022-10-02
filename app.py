@@ -12,14 +12,10 @@ from application.services.db_connection import DBConnection
 
 app = Flask(__name__, template_folder="templates")
 
-contactName = "contactName"
-
-phoneValue = "phoneValue"
-
 
 @app.route("/phones/create")
 @use_args(
-    {contactName: fields.Str(required=True), phoneValue: fields.Int(required=True)},
+    {"contactName": fields.Str(required=True), "phoneValue": fields.Int(required=True)},
     location="query",
 )
 def phone__create(args):
@@ -27,7 +23,7 @@ def phone__create(args):
         with connection:
             connection.execute(
                 "INSERT INTO phones (contactName, phoneValue) VALUES (:contactName, :phoneValue);",
-                {contactName: args[contactName], phoneValue: args[phoneValue]},
+                {"contactName": args["contactName"], "phoneValue": args["phoneValue"]},
             )
 
     return "<h3>New entry was added to phone book!</h3>"
@@ -40,7 +36,7 @@ def phones__read_all():
 
     return "<br>".join(
         [
-            f'{phone["phoneID"]}: {phone[contactName]} - {phone[phoneValue]}'
+            f'{phone["phoneID"]}: {phone["contactName"]} - {phone["phoneValue"]}'
             for phone in phones
         ]
     )
@@ -60,7 +56,7 @@ def phones__read(phone_id: int):
 
 
 @app.route("/phones/update/<int:phone_id>")
-@use_args({phoneValue: fields.Int(), contactName: fields.Str()}, location="query")
+@use_args({"phoneValue": fields.Int(), "contactName": fields.Str()}, location="query")
 def phonecontacts__update(
     args,
     phone_id: int,
